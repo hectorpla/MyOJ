@@ -1,8 +1,21 @@
+<app-nav-bar></app-nav-bar>
 <div class="container" *ngIf="problem">
-  <div class="col">
+  <div class="row">
     <h2> {{problem.id}}. {{problem.name}} </h2>
+    <span> 
+      <a routerLink="/add-problem"> (some img) modify problem </a> 
+    </span>
   </div>
-  <div class="col">
+  <div class="row well">
     <p>{{problem.desc}}</p>
+  </div>
+
+  <div id class="row">
+    <p> language frame </p>
+    <select value>
+      <option>
+
+      </option>
+    </select>
   </div>
 </div>

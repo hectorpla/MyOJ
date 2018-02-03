@@ -8,14 +8,16 @@ import { DataService } from './services/data.service';
 import { ProblemDetailComponent } from './components/problem-detail/problem-detail.component'
 import { routing } from './app.routes';
 import { NewProblemComponent } from './components/new-problem/new-problem.component';
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     ProblemListComponent,
     ProblemDetailComponent,
-    NewProblemComponent
+    NewProblemComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
