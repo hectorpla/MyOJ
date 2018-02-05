@@ -1,20 +1,26 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const router = express.Router()
 const ProblemService = require('../services/problemService')
 
+const router = express.Router()
 const jsonParser = bodyParser.json()
 
 router.get('/problems', function(req, res) {
     ProblemService.getProblems()
         .then(problems => res.json(problems))
-        // .catch(error => {})
+        .catch(error => res.send(err))
 })
 
 router.get('/problems/:id', function(req, res) {
     ProblemService.getProblem(req.params.id)
         .then(problem => res.json(problem))
         .catch(err => { res.status(400).send(err) })
+})
+
+router.delete('/problems/:id', function(req, res) {
+    ProblemService.deleteProblem(req.params.id)
+        .then(problem => res.json(problem))
+        .catch(err => res.send(err))
 })
 
 router.post('/problems', jsonParser, function(req, res) {

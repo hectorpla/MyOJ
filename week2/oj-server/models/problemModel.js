@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+
 const problemSchema = mongoose.Schema({
     id: Number,
     name: String,
@@ -6,4 +7,6 @@ const problemSchema = mongoose.Schema({
     difficulty: String
 })
 
-// module.exports =
+const ProblemModel = mongoose.model('Problem', problemSchema)
+
+module.exports = ProblemModel

@@ -1,45 +1,43 @@
-let problems = [
-    {   id: 1,
-        name: 'aa',
-        desc: '..',
-        difficulty: 'easy'
-    },
-    {
-        id: 2,
-        name: 'bbb',
-        desc: '111',
-        difficulty: 'hard'
-    }
-]
+const ProblemModel = require('../models/problemModel')
 
 function getProblems() {
-    return new Promise((resolve, reject) => resolve(problems))
+    return new Promise((resolve, reject) => {
+        ProblemModel.find({}, (err, problems) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(problems)
+            }
+        })
+    })
 }
 
 function getProblem(id) {
     return new Promise((resolve, reject) => {
-        problem = problems.find(problem => problem.id == id)
-        if (problem) {
-            resolve(problem)
-        } else {
-            reject(`the problem ${id} doesn't exist`)
-        }
+        ProblemModel.findOne({id: id}, (err, problem) => {
+            if (err) {
+                reject(`the problem ${id} doesn't exist`)
+            } else {
+                resolve(problem)
+            }
+        })
     })
 }
 
 function addProblem(newProblem) {
     return new Promise((resolve, reject) => {
-        // console.log(JSON.stringify(newProblem))
-        if (problems.find(problem => problem.name === newProblem.name)) {
-            console.log('to reject')
-            reject(`the problem '${newProblem.name}' exists`)
-        }
-        else {
-            newProblem.id = problems.length + 1
-            problems.push(newProblem) // used problems.append, no error in the console
-            console.log('to resolve')
-            resolve(newProblem)
-        }
+        ProblemModel.findOne({name: newProblem.name}, (err, problem) => {
+            if (problem) {
+                reject(`the problem '${newProblem.name}' exists`)
+            } else {
+                ProblemModel.count({}, (err, count) => {
+                    newProblem.id = count + 1
+                    const problemToAdd = new ProblemModel(newProblem)
+                    problemToAdd.save()
+                    resolve(newProblem)
+                })
+            }
+        })
     })
 }
 
@@ -48,12 +46,27 @@ function modifyProblem(modifiedProblem) {
         if (modifiedProblem.name == undefined) {
             reject('please specify problem name')
         }
-        problem = problems.find(problem => problem.name === modifiedProblem.name)
-        if (!problem) {
-            reject(`no such a problem '${modifiedProblem.name}'`)
-        }
-        Object.assign(problem, modifiedProblem)
-        resolve(problem)
+        ProblemModel.findOneAndUpdate({name: modifiedProblem.name},
+            modifiedProblem, (err, problem) => {
+                if (err) {
+                    reject(err) // bad: no error occur if the problem doesn't exist
+                } else {
+                    resolve(`modified '${modifiedProblem.name} successfully`)
+                }
+            })
+    })
+}
+
+function deleteProblem(id) {
+    return new Promise((resolve, reject) => {
+        // should find and resolve the found problem if it exists
+        ProblemModel.deleteOne({id: id}, (err, problem) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(problem)
+            }
+        })
     })
 }
 
@@ -62,4 +75,5 @@ module.exports = {
     getProblem,
     addProblem,
     modifyProblem,
+    deleteProblem,
 }
