@@ -31,7 +31,7 @@ function addProblem(newProblem) {
                 reject(`the problem '${newProblem.name}' exists`)
             } else {
                 ProblemModel.count({}, (err, count) => {
-                    newProblem.id = count + 1
+                    newProblem.id = count + 1 // buggy, should, if allowing deletion of problems
                     const problemToAdd = new ProblemModel(newProblem)
                     problemToAdd.save()
                     resolve(newProblem)
