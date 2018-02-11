@@ -30,12 +30,31 @@ function addProblem(newProblem) {
             if (problem) {
                 reject(`the problem '${newProblem.name}' exists`)
             } else {
-                ProblemModel.count({}, (err, count) => {
-                    newProblem.id = count + 1 // buggy, should, if allowing deletion of problems
-                    const problemToAdd = new ProblemModel(newProblem)
-                    problemToAdd.save()
-                    resolve(newProblem)
-                })
+                // ProblemModel.count({}, (err, count) => {
+                //     newProblem.id = count + 1 // buggy, should, if allowing deletion of problems
+                //     const problemToAdd = new ProblemModel(newProblem)
+                //     problemToAdd.save()
+                //     resolve(newProblem)
+                // })
+                console.log('about to aggregate')
+                ProblemModel.aggregate([{$group: {_id: null, last: {$max: "$id"}}}],
+                    (err, result) => {
+                        if (err) { // if the database is empty, this branch is still not able
+                                   // to be reached
+                            console.log(JSON.stringify(err))
+                            newProblem.id = 1
+                            new ProblemModel(newProblem).save()
+                            resolve(problem)
+                        }
+                        else {
+                            console.log(JSON.stringify(result))
+                            newProblem.id = 
+                                (result && result.length) ? result[0].last + 1 : 1
+                                 // is there a better way?
+                            new ProblemModel(newProblem).save()
+                            resolve(problem)
+                        }
+                    })
             }
         })
     })

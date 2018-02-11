@@ -24,7 +24,7 @@ router.delete('/problems/:id', function(req, res) {
 })
 
 router.post('/problems', jsonParser, function(req, res) {
-    console.log('router.post: ' + JSON.stringify(req.body))
+    // console.log('router.post: ' + JSON.stringify(req.body))
     ProblemService.addProblem(req.body)
         .then(p => res.json(p))
         .catch(err => res.status(400).send(err)) // oneliner arrow function (statement?)
