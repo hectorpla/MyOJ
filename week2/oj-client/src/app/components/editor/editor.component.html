@@ -8,5 +8,21 @@
         </button>
     </form>
 </div>
+<div>
+    <strong> Active Users: </strong>
+    <ul id="active-users">
+        <li *ngFor="let user of activeUsers"> 
+            <span class="square user-{{user}}"></span>
+            #{{user}} 
+        </li>
+    </ul>
+</div>
+
 
 <div id="editor"></div>
+
+<div>
+    <button type="button" class="btn btn-success" (click)="submit()" >
+        Submit
+    </button>
+</div>

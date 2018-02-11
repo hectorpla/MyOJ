@@ -1,3 +1,43 @@
 #editor {
     height: 400px
 }
+
+#active-users li {
+    display: inline;
+}
+
+/* #active-users li::before {
+    content: "•";
+    padding-right: 8px;
+    color: white;
+} */
+
+.square {
+    display: -webkit-inline-box;
+    width: 10px;
+    height: 10px
+}
+
+.user-1 {
+    background-color: rgb(11, 240, 209)
+}
+
+.user-2 {
+    background-color: rgb(240, 11, 229)
+}
+
+.user-3 {
+    background-color: rgb(11, 240, 42)
+}
+
+.user-4 {
+    background-color: rgb(240, 11, 11)
+}
+
+.user-5 {
+    background-color: rgb(240, 206, 11)
+}
+
+.user-6 {
+    background-color: rgb(34, 11, 240)
+}
