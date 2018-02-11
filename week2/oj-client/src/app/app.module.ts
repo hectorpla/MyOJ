@@ -33,7 +33,7 @@ import { difficultyPipe } from './difficulty.pipe';
   ],
   providers: [
     DataService,
-    CollaborationService
+    CollaborationService,
   ],
   bootstrap: [AppComponent]
 })

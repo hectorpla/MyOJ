@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CollaborationService } from '../../services/collaboration.service';
 
 declare var ace: any; // black magic
-declare var io: any;
 
 @Component({
   selector: 'app-editor',
@@ -23,26 +23,19 @@ export class EditorComponent implements OnInit {
 
   selectedLanguage: string;
 
-  constructor() { }
+  constructor(private collaborationService: CollaborationService) { }
 
-  socket: any;
   ngOnInit() {
     this.init();
-
-    // var socket = io(window.location.origin, {query: 'message:test'});
-    this.socket = io()
-    this.socket.on("connected", msg => console.log(msg))
+    this.collaborationService.init(this.editor);
   }
 
   init() {
     this.editor = ace.edit("editor");
-    console.log('creating editor')
     this.editor.setTheme("ace/theme/cobalt");
     
     this.setLanguage(this.languages[0]);
     this.reset();
-
-    this.editor.on("change", e => console.log(e));
   }
 
   // reset content in editor
