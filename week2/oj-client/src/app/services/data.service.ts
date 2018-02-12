@@ -4,6 +4,9 @@ import { Observable } from 'rxjs/Observable'; // different from the demo
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+const jsonOptions = {
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
+};
 
 @Injectable()
 export class DataService {
@@ -29,16 +32,21 @@ export class DataService {
   }
 
   addProblem(newProblem: Problem) {
-    const options = {
-      headers: new HttpHeaders({'Content-Type': 'application/json'})
-    };
-    return this.httpClient.post(`${this.serverAPI}/problems`, newProblem, options)
+    
+    return this.httpClient.post(`${this.serverAPI}/problems`, newProblem, jsonOptions)
       .toPromise()
       .then(res => {
         this.getProblems();
         return res;
       })
       .catch(this.handleError);
+  }
+
+  modifyProblem(problem: Problem) {
+    return this.httpClient.put(`${this.serverAPI}/problems`, problem, jsonOptions)
+      .toPromise()
+      .then(res => res)
+      .catch(this.handleError)
   }
 
   deleteProblem(id: number) {

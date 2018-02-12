@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router'
+
 import { DataService } from '../../services/data.service'
 import { Problem, DIFFICULTIES } from '../../models/problem.model';
 
@@ -22,7 +24,9 @@ export class NewProblemComponent implements OnInit {
   difficulties: string[] = DIFFICULTIES;
   showProblemExistAlert: boolean = false;
 
-  constructor(private dataService: DataService) { }
+  modifyMode: boolean = false;
+
+  constructor(private dataService: DataService, private route:ActivatedRoute) { }
 
   addProblem() {
     this.dataService.addProblem(this.newProblem)
@@ -33,8 +37,24 @@ export class NewProblemComponent implements OnInit {
       })
   }
 
-  ngOnInit() {
+  modifyProblem() {
+    this.dataService.modifyProblem(this.newProblem)
+      .then(res => console.log(res))
+      .catch(err => {})
+  }
 
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      // console.log(params)
+      if (Object.keys(params).length == 0) {
+        return;
+      }
+      console.log('about to set modify mode')
+      this.modifyMode = true;
+      this.dataService.getProblem(+params.id)
+        .then((problem: Problem) => this.newProblem = problem)
+        .catch(err => console.log(err))
+    })
   }
 
 }

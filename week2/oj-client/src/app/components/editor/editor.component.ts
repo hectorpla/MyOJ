@@ -40,7 +40,7 @@ export class EditorComponent implements OnInit {
       this.collaborationService.init(this.editor, this.editorSessionId);
       // subscribe to active user list
       this.activeUserSubscription = this.collaborationService
-        .user_list$.subscribe((users: number[]) => {
+        .userList$.subscribe((users: number[]) => {
           this.activeUsers = users;
           console.log('editor comp user list: ' + JSON.stringify(users));
         })
@@ -49,6 +49,7 @@ export class EditorComponent implements OnInit {
 
   ngOnDestroy() {
     this.activeUserSubscription.unsubscribe();
+    this.collaborationService.disconnect(); // otherwise, one user can have more than one sockets
   }
 
   initEditor() {

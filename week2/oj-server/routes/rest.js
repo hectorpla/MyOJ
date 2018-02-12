@@ -32,7 +32,7 @@ router.post('/problems', jsonParser, function(req, res) {
 
 router.put('/problems', jsonParser, function(req, res) {
     ProblemService.modifyProblem(req.body)
-        .then(p => res.send(`successfully modify problem '${req.body.name}'`))
+        .then(p => res.json(`successfully modify problem '${req.body.name}' if it exists`))
         .catch(err => res.status(400).send(err))
 })
 

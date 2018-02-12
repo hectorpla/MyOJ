@@ -6,7 +6,6 @@ module.exports = function(io) {
         function broadcastCollabChange() {
             console.log('current session ' + sessionId, sessions[sessionId])
             sessions[sessionId].participants.forEach(sid => {
-                // if (sid === socketId) { return }
                 io.to(sid).emit('collaborators change', 
                                 sessions[sessionId].participantNums)
             })

@@ -6,7 +6,7 @@ declare var io: any;
 @Injectable()
 export class CollaborationService {
   private collaborationSocket: any;
-  private _user_list$: Observable<number[]>;
+  private _userList$: Observable<number[]>;
 
   constructor() { }
 
@@ -27,11 +27,7 @@ export class CollaborationService {
       console.log('rejected from the server');
     })
 
-    // this.collaborationSocket.on("collaborators change", (users) => {
-    //   console.log('new user list: ' + JSON.stringify(users));
-    // })
-
-    this._user_list$ = new Observable<number[]>(observer => {
+    this._userList$ = new Observable<number[]>(observer => {
         this.collaborationSocket.on("collaborators change", (users) => {
           observer.next(users)
         })
@@ -47,10 +43,14 @@ export class CollaborationService {
     });
   }
 
-  get user_list$() { return this._user_list$; }
+  get userList$() { return this._userList$; }
 
   broadcastChange(delta: Object) {
     this.collaborationSocket.emit('edition change', delta);
+  }
+
+  disconnect() {
+    this.collaborationSocket.disconnect();
   }
 
 }

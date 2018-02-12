@@ -24,6 +24,10 @@ const routes: Routes = [
         pathMatch: 'prefix'
     },
     {
+        path: 'modify-problem/:id',
+        component: NewProblemComponent
+    },
+    {
         path: '*',
         // set redirect
         redirectTo: 'problems'

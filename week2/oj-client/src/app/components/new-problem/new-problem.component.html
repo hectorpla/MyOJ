@@ -1,9 +1,10 @@
-<div class="container">
+<div class="container" *ngIf="!(modifyMode && newProblem.name == '')">
   <form #formRef="ngForm">
     <div class="form-group">
       <label for="problemName"> Problem Name </label>
       <input type="text" class="form-control" id="problemName" name="problemName"
-      placeholder="Input name of a problem" required [(ngModel)]="newProblem.name">
+      placeholder="Input name of a problem" required [(ngModel)]="newProblem.name"
+      [disabled]="modifyMode">
     </div>
     <div class="form-group">
         <label for="problemDesc"> Problem Description </label>
@@ -20,13 +21,23 @@
         </option>
       </select>
     </div>
-    <button class="form-control" type="submit" class="btn btn-default" 
-        (click)="addProblem()" [disabled]="!formRef.form.valid"> 
-        Add 
-    </button>
+    <div>
+      <button class="form-control" type="submit" class="btn btn-success" 
+          (click)="addProblem()" [disabled]="!formRef.form.valid" *ngIf="!modifyMode"> 
+          Add 
+      </button>
+      <button class="form-control" type="submit" class="btn btn-primary" 
+          (click)="modifyProblem()" *ngIf="modifyMode"> 
+          Modify 
+      </button>
+    </div>
     <div class="alert alert-danger" *ngIf="showProblemExistAlert">
         <span class="sr-only">Error:</span>
         The problem has already in the database
     </div>
   </form>
+</div>
+
+<div *ngIf="(modifyMode && newProblem.name == '')">
+  No such a problem!
 </div>
