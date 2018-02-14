@@ -1,0 +1,19 @@
+<div class="container" *ngIf="problem">
+  <div class="row">
+    <h2> 
+      {{problem.id}}. {{problem.name}}
+      <span> 
+          <a routerLink="/modify-problem/{{problem.id}}" class="pull-right btn btn-danger"> 
+            Modify Problem 
+          </a> 
+      </span>
+    </h2>
+    
+  </div>
+  <div class="row well">
+    <p>{{problem.desc}}</p>
+  </div>
+  <div class="hidden-xs">
+    <app-editor></app-editor>
+  </div>
+</div>
