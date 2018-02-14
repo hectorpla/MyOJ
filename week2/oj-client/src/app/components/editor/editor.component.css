@@ -21,25 +21,30 @@
 }
 
 .user-1 {
-    background-color: rgb(11, 240, 209)
+    background-color: rgb(11, 240, 209) !important;
 }
 
 .user-2 {
-    background-color: rgb(240, 11, 229)
+    background-color: rgb(240, 11, 229) !important
 }
 
 .user-3 {
-    background-color: rgb(11, 240, 42)
+    background-color: rgb(11, 240, 42) !important
 }
 
 .user-4 {
-    background-color: rgb(240, 11, 11)
+    background-color: rgb(240, 11, 11) !important
 }
 
 .user-5 {
-    background-color: rgb(240, 206, 11)
+    background-color: rgb(240, 206, 11) !important
 }
 
 .user-6 {
-    background-color: rgb(34, 11, 240)
+    background-color: rgb(34, 11, 240) !important
+}
+
+.pos-abs {
+    position: absolute;
+    z-index: 20;
 }

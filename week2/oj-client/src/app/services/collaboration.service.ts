@@ -9,6 +9,7 @@ declare var aceRange: any;
 export class CollaborationService {
   private collaborationSocket: any;
   private _userList$: Observable<number[]>;
+  private activeUserCursors = {}
 
   constructor() { }
 
@@ -26,15 +27,18 @@ export class CollaborationService {
     })
 
     this.collaborationSocket.on("cursor change", (userId: number, position) => {
-      console.log(`cursor changed in ${userId}, ${JSON.stringify(position)}`);
+      console.log(`cursor changed in user ${userId}, ${JSON.stringify(position)}`);
       // implementation for colored cursors
-      let {row, col} = position;
-      console.log(ace)
-      let range = new aceRange(row, col, row, col + 1);
+      let {row, column} = position;
+      let range = new aceRange(row, column, row, column + 2);
       console.log(range);
 
-      editor.getSession()
-        .addMarker(range,'user' + userId,'unknown-type',true);
+      if (userId in this.activeUserCursors) {
+        editor.getSession().removeMarker(this.activeUserCursors[userId]);
+      }
+      this.activeUserCursors[userId] = editor.getSession()
+        .addMarker(range, `user-${userId} edit-marker`, true);
+      console.log(this.activeUserCursors);
     })
 
     this.collaborationSocket.on("disconnect", () => {
@@ -44,6 +48,15 @@ export class CollaborationService {
     // participants change notification
     this._userList$ = new Observable<number[]>(observer => {
         this.collaborationSocket.on("participants change", (users) => {
+          // ok or not to put here?
+          console.log('before removing cursors ' + JSON.stringify(users))
+          for (let user of Object.keys(this.activeUserCursors)) {
+            if (!users.includes(+user)) {
+              console.log(`removing user ${user}'s cursor`)
+              editor.getSession().removeMarker(this.activeUserCursors[user]);
+              delete this.activeUserCursors[user];
+            }
+          }
           observer.next(users)
         })
     })

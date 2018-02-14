@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription';
 
 declare var ace: any; // black magic
+declare var aceRange: any;
 
 @Component({
   selector: 'app-editor',
@@ -58,11 +59,14 @@ export class EditorComponent implements OnInit {
     
     this.setLanguage(this.languages[0]);
     this.reset();
+    // for test
+    // let marker = this.editor.session.addMarker(new aceRange(0,5,0,8), 'user-1 edit-marker', true);
   }
 
   // reset content in editor
   reset() {
     this.editor.setValue(this.defaultContent[this.selectedLanguage]);
+    this.editor.getSelection().moveCursorTo(0, 0, 0, false);
   }
 
   get lang() { return this.selectedLanguage; }

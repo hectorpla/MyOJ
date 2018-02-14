@@ -15,7 +15,7 @@ module.exports = function(io) {
         console.log(`a user connected (in session/problem ${sessionId}), the corresponding socket: id is ${socket.id}`)
         io.to(socket.id).emit('connected', {message:"congrads"})
 
-        
+        // set-up session corresponding to a problem
         if (!(sessionId in sessions)) {
             sessions[sessionId] = {
                 participants: [],
@@ -27,6 +27,7 @@ module.exports = function(io) {
             return
         }
 
+        // add the connected user to the session
         const session = sessions[sessionId]
         const socketId = socket.id
         const userId = session.availableSlots.shift() // one-to-one correspondence to socketId
