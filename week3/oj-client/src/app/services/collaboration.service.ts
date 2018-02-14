@@ -19,6 +19,10 @@ export class CollaborationService {
 
     this.collaborationSocket.on("connected", msg => console.log(msg));
 
+    this.collaborationSocket.on("buffer ready", () => {
+      this.collaborationSocket.emit("restore buffer")
+    })
+
     this.collaborationSocket.on("edition change", delta => {
       delete delta.id
       // console.log('change!!! ' + JSON.stringify(delta))
