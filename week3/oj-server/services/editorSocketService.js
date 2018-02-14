@@ -28,6 +28,13 @@ module.exports = function(io) {
             return
         }
 
+        function checkRestore() {
+            if (sessions[sessionId].restoreInstructions.length > 0) {
+                socket.emit('buffer ready')
+            } else {
+                console.log('nothing to restore')
+            }
+        }
         // set-up session corresponding to a problem
         if (!(sessionId in sessions)) {
             sessions[sessionId] = {
@@ -42,9 +49,10 @@ module.exports = function(io) {
                 } else {
                     sessions[sessionId].restoreInstructions = []
                 }
-                socket.emit('buffer ready')
+                checkRestore()
             })
-        }  
+        }
+        else { checkRestore() }
 
         // add the connected user to the session
         const session = sessions[sessionId]
