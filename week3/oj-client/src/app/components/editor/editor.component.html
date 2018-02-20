@@ -28,3 +28,10 @@
         Submit
     </button>
 </div>
+
+<div id="exec-result" class="well" *ngIf="result"> 
+    {{ obj2string(result) }}
+</div>
+<div id="error-message" class="alert alert-danger" *ngIf="errorMessage"> 
+    {{ errorMessage }} 
+</div>

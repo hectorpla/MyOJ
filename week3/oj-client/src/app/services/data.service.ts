@@ -57,11 +57,19 @@ export class DataService {
         ${JSON.stringify(res)}`);
         this.getProblems();
       })
-      .catch(err => console.log(`deletion failed: ${err}`))
+      .catch(err => console.log(`deletion failed: ${err}`));
+  }
+
+  buildAndRun(lang: string, code: string) {
+    let body = {lang: lang, code: code};
+    return this.httpClient.post(`${this.serverAPI}/build-and-run`, body, jsonOptions)
+      .toPromise()
+      .then(res => res)
+      .catch(this.handleError);
   }
 
   private handleError(err: any) { // type annotation missed
     console.error(err);
-    return Promise.reject(err.body || err)
+    return Promise.reject(err.body || err);
   } 
 }

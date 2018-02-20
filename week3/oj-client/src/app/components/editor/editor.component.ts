@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CollaborationService } from '../../services/collaboration.service';
 import { ActivatedRoute, Params } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription';
+import { DataService } from '../../services/data.service';
 
 declare var ace: any; // black magic
 declare var aceRange: any;
@@ -20,18 +21,25 @@ export class EditorComponent implements OnInit {
 
   // this data should be put sperately
   defaultContent = {
-    'Java': `// Java: your code`,
+    'Java': `class Solution { 
+      public static void main(String[] args) { 
+        System.out.println(\"Hello World!\");
+      }}`,
     'OCaml': `(* OCaml: your code *)`,
     'Python': `# Python: your code`
   }
 
-  // it works even not in the constructor
+  // it works even if not in the constructor
   languages: string[] = Object.keys(this.defaultContent);
-
   selectedLanguage: string;
 
+  // result of the running
+  result: object;
+  errorMessage: string;
+
   constructor(private collaborationService: CollaborationService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private dataService: DataService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -82,6 +90,19 @@ export class EditorComponent implements OnInit {
 
   // submit code
   submit() {
-    console.log(this.editor.getValue())
+    console.log(this.editor.getValue());
+    this.dataService.buildAndRun(this.selectedLanguage, this.editor.getValue())
+      .then(res => {
+        this.errorMessage = null;
+        this.result = res;
+      })
+      .catch(err => {
+        this.result = null;
+        this.errorMessage = JSON.stringify(err.error);
+      });
+  }
+
+  obj2string(obj: object) {
+    return JSON.stringify(obj);
   }
 }

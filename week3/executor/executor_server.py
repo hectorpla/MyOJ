@@ -8,7 +8,7 @@ import executor_utils as eu
 
 app = Flask(__name__)
 
-@app.route('/build_and_run', methods=['POST'])
+@app.route('/build-and-run', methods=['POST'])
 def build_and_run():
     '''
         expect the data having code and language section
